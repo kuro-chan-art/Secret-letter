@@ -6,27 +6,34 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .container {
     background: white;
-    width: 450px;
+    width: min(450px, 90vw); /* Responsive width: max 450px or 90% of viewport width */
     padding: 25px;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
     text-align: center;
+    animation: fadeInUp 1s ease-out;
 }
 
 h1 {
     color: #e75480;
     margin-bottom: 20px;
+    font-size: clamp(24px, 5vw, 32px); /* Responsive font size */
+    animation: pulse 2s infinite;
 }
 
 label {
     display: block;
     margin-top: 15px;
     font-weight: bold;
+    font-size: clamp(14px, 3vw, 16px); /* Responsive font size */
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.5s forwards;
 }
 
 input {
@@ -35,6 +42,16 @@ input {
     margin-top: 5px;
     border: 1px solid #e75480;
     border-radius: 8px;
+    font-size: clamp(14px, 3vw, 16px); /* Responsive font size */
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.7s forwards;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+input:focus {
+    border-color: #d1436f;
+    box-shadow: 0 0 10px rgba(231, 84, 128, 0.5);
 }
 
 button {
@@ -43,15 +60,24 @@ button {
     padding: 12px;
     background: #e75480;
     color: white;
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px); /* Responsive font size */
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.9s forwards;
+    box-sizing: border-box; /* Include padding in width */
 }
 
 button:hover {
     background: #d1436f;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 84, 128, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 #letterBox {
@@ -60,13 +86,73 @@ button:hover {
     background: #fff0f5;
     border-radius: 12px;
     display: none;
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px); /* Responsive font size */
     line-height: 1.6;
     color: #c2185b;
     text-align: left;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box; /* Include padding in width */
 }
 
-/* Simple bounce-in animation for surprise */
+/* Floating hearts animation */
+#letterBox::before {
+    content: '❤️';
+    position: absolute;
+    top: -10px;
+    left: 10%;
+    font-size: clamp(16px, 4vw, 20px); /* Responsive font size */
+    animation: float 3s ease-in-out infinite;
+}
+
+#letterBox::after {
+    content: '💖';
+    position: absolute;
+    top: -10px;
+    right: 10%;
+    font-size: clamp(14px, 3.5vw, 18px); /* Responsive font size */
+    animation: float 4s ease-in-out infinite reverse;
+}
+
+/* Keyframe animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
 @keyframes bounceIn {
     0% { transform: scale(0.5); opacity: 0; }
     60% { transform: scale(1.2); opacity: 1; }
@@ -74,6 +160,69 @@ button:hover {
     100% { transform: scale(1); }
 }
 
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
 #letterBox.show {
     animation: bounceIn 1s ease forwards;
+}
+
+.typewriter {
+    overflow: hidden;
+    border-right: 2px solid #c2185b;
+    white-space: nowrap;
+    animation: typewriter 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #c2185b; }
+}
+
+/* Enhanced responsive design */
+@media (max-width: 768px) {
+    .container {
+        width: 95vw; /* Wider on tablets */
+        padding: 20px;
+    }
+    h1 {
+        font-size: 28px;
+    }
+    label, input, button, #letterBox {
+        font-size: 16px;
+    }
+    #letterBox::before {
+        font-size: 18px;
+    }
+    #letterBox::after {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 98vw; /* Almost full width on small phones */
+        padding: 15px;
+    }
+    h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+    label {
+        margin-top: 10px;
+    }
+    input, button {
+        padding: 12px;
+        font-size: 16px;
+    }
+    #letterBox {
+        padding: 15px;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+    #letterBox::before, #letterBox::after {
+        display: none; /* Hide floating hearts on very small screens to avoid clutter */
+    }
 }
