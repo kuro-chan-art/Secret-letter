@@ -8,22 +8,25 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow-x: hidden; /* Prevent horizontal scroll */
+    padding: 10px; /* Add small padding for edge cases */
 }
 
 .container {
     background: white;
-    width: min(450px, 90vw); /* Responsive width: max 450px or 90% of viewport width */
-    padding: 25px;
+    width: min(450px, 95vw); /* More responsive: max 450px or 95% of viewport width */
+    max-width: 100%; /* Ensure it never exceeds screen */
+    padding: 20px;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
     text-align: center;
     animation: fadeInUp 1s ease-out;
+    box-sizing: border-box; /* Include padding in width */
 }
 
 h1 {
     color: #e75480;
     margin-bottom: 20px;
-    font-size: clamp(24px, 5vw, 32px); /* Responsive font size */
+    font-size: clamp(20px, 6vw, 32px); /* Better scaling for small screens */
     animation: pulse 2s infinite;
 }
 
@@ -31,7 +34,7 @@ label {
     display: block;
     margin-top: 15px;
     font-weight: bold;
-    font-size: clamp(14px, 3vw, 16px); /* Responsive font size */
+    font-size: clamp(12px, 4vw, 16px);
     opacity: 0;
     animation: fadeIn 1s ease-out 0.5s forwards;
 }
@@ -42,11 +45,11 @@ input {
     margin-top: 5px;
     border: 1px solid #e75480;
     border-radius: 8px;
-    font-size: clamp(14px, 3vw, 16px); /* Responsive font size */
+    font-size: clamp(14px, 4vw, 16px);
     transition: all 0.3s ease;
     opacity: 0;
     animation: fadeIn 1s ease-out 0.7s forwards;
-    box-sizing: border-box; /* Include padding in width */
+    box-sizing: border-box;
 }
 
 input:focus {
@@ -60,14 +63,14 @@ button {
     padding: 12px;
     background: #e75480;
     color: white;
-    font-size: clamp(14px, 3vw, 16px); /* Responsive font size */
+    font-size: clamp(14px, 4vw, 16px);
     border: none;
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
     opacity: 0;
     animation: fadeIn 1s ease-out 0.9s forwards;
-    box-sizing: border-box; /* Include padding in width */
+    box-sizing: border-box;
 }
 
 button:hover {
@@ -82,26 +85,29 @@ button:active {
 
 #letterBox {
     margin-top: 25px;
-    padding: 20px;
+    padding: 15px;
     background: #fff0f5;
     border-radius: 12px;
     display: none;
-    font-size: clamp(14px, 3vw, 16px); /* Responsive font size */
-    line-height: 1.6;
+    font-size: clamp(12px, 4vw, 16px);
+    line-height: 1.5; /* Tighter line height for better fit */
     color: #c2185b;
     text-align: left;
     position: relative;
     overflow: hidden;
-    box-sizing: border-box; /* Include padding in width */
+    word-wrap: break-word; /* Ensure long words wrap */
+    box-sizing: border-box;
+    max-height: 60vh; /* Limit height to prevent overflow on small screens */
+    overflow-y: auto; /* Add scroll if needed */
 }
 
-/* Floating hearts animation */
+/* Floating hearts animation - hidden on small screens */
 #letterBox::before {
     content: '❤️';
     position: absolute;
     top: -10px;
     left: 10%;
-    font-size: clamp(16px, 4vw, 20px); /* Responsive font size */
+    font-size: clamp(14px, 5vw, 20px);
     animation: float 3s ease-in-out infinite;
 }
 
@@ -110,7 +116,7 @@ button:active {
     position: absolute;
     top: -10px;
     right: 10%;
-    font-size: clamp(14px, 3.5vw, 18px); /* Responsive font size */
+    font-size: clamp(12px, 4vw, 18px);
     animation: float 4s ease-in-out infinite reverse;
 }
 
@@ -165,6 +171,11 @@ button:active {
     to { width: 100%; }
 }
 
+@keyframes fadeInText {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 #letterBox.show {
     animation: bounceIn 1s ease forwards;
 }
@@ -173,7 +184,11 @@ button:active {
     overflow: hidden;
     border-right: 2px solid #c2185b;
     white-space: nowrap;
-    animation: typewriter 3s steps(40, end), blink-caret 0.75s step-end infinite;
+    animation: typewriter 4s steps(100, end), blink-caret 0.75s step-end infinite; /* Adjusted steps for longer text */
+}
+
+.fadeInText {
+    animation: fadeInText 2s ease forwards;
 }
 
 @keyframes blink-caret {
@@ -184,45 +199,51 @@ button:active {
 /* Enhanced responsive design */
 @media (max-width: 768px) {
     .container {
-        width: 95vw; /* Wider on tablets */
-        padding: 20px;
-    }
-    h1 {
-        font-size: 28px;
-    }
-    label, input, button, #letterBox {
-        font-size: 16px;
-    }
-    #letterBox::before {
-        font-size: 18px;
-    }
-    #letterBox::after {
-        font-size: 16px;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        width: 98vw; /* Almost full width on small phones */
+        width: 90vw;
         padding: 15px;
     }
     h1 {
         font-size: 24px;
+    }
+    #letterBox::before, #letterBox::after {
+        display: none; /* Hide hearts on tablets for cleaner look */
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    .container {
+        width: 100vw;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    h1 {
+        font-size: 20px;
         margin-bottom: 15px;
     }
     label {
         margin-top: 10px;
+        font-size: 14px;
     }
     input, button {
-        padding: 12px;
-        font-size: 16px;
+        padding: 10px;
+        font-size: 16px; /* Prevent zoom on iOS */
     }
     #letterBox {
-        padding: 15px;
+        padding: 10px;
         font-size: 14px;
-        margin-top: 20px;
+        margin-top: 15px;
+        max-height: 50vh;
     }
     #letterBox::before, #letterBox::after {
-        display: none; /* Hide floating hearts on very small screens to avoid clutter */
+        display: none; /* Hide hearts on phones */
+    }
+    .typewriter {
+        animation: none; /* Disable typewriter on phones for better performance */
+    }
+    .fadeInText {
+        animation: fadeInText 1.5s ease forwards; /* Use fade-in instead */
     }
 }
