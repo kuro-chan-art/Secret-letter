@@ -1,4 +1,4 @@
-body {
+body {body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,32 +11,41 @@ body {
     padding: 10px; /* Add small padding for edge cases */
 }
 
+
+/* Pages */
+.page {
+    display: none;
+    animation: fadeIn 1.5s ease;
+}
+
+.active {
+    display: block;
+}
+
+/* Letter Generator */
 .container {
     background: white;
-    width: min(450px, 95vw); /* More responsive: max 450px or 95% of viewport width */
-    max-width: 100%; /* Ensure it never exceeds screen */
-    padding: 20px;
+    width: 450px;
+    padding: 25px;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
     text-align: center;
-    animation: fadeInUp 1s ease-out;
-    box-sizing: border-box; /* Include padding in width */
+}
+
+p {
+    margin: auto;
 }
 
 h1 {
     color: #e75480;
     margin-bottom: 20px;
-    font-size: clamp(20px, 6vw, 32px); /* Better scaling for small screens */
-    animation: pulse 2s infinite;
 }
 
 label {
     display: block;
     margin-top: 15px;
     font-weight: bold;
-    font-size: clamp(12px, 4vw, 16px);
-    opacity: 0;
-    animation: fadeIn 1s ease-out 0.5s forwards;
+    color: #333;
 }
 
 input {
@@ -45,16 +54,6 @@ input {
     margin-top: 5px;
     border: 1px solid #e75480;
     border-radius: 8px;
-    font-size: clamp(14px, 4vw, 16px);
-    transition: all 0.3s ease;
-    opacity: 0;
-    animation: fadeIn 1s ease-out 0.7s forwards;
-    box-sizing: border-box;
-}
-
-input:focus {
-    border-color: #d1436f;
-    box-shadow: 0 0 10px rgba(231, 84, 128, 0.5);
 }
 
 button {
@@ -63,187 +62,68 @@ button {
     padding: 12px;
     background: #e75480;
     color: white;
-    font-size: clamp(14px, 4vw, 16px);
+    font-size: 16px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    opacity: 0;
-    animation: fadeIn 1s ease-out 0.9s forwards;
-    box-sizing: border-box;
 }
 
 button:hover {
     background: #d1436f;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(231, 84, 128, 0.4);
 }
 
-button:active {
-    transform: translateY(0);
-}
-
+/* Letter Box */
 #letterBox {
     margin-top: 25px;
-    padding: 15px;
+    padding: 20px;
     background: #fff0f5;
     border-radius: 12px;
     display: none;
-    font-size: clamp(12px, 4vw, 16px);
-    line-height: 1.5; /* Tighter line height for better fit */
+    font-size: 16px;
+    line-height: 1.6;
     color: #c2185b;
     text-align: left;
-    position: relative;
-    overflow: hidden;
-    word-wrap: break-word; /* Ensure long words wrap */
-    box-sizing: border-box;
-    max-height: 60vh; /* Limit height to prevent overflow on small screens */
-    overflow-y: auto; /* Add scroll if needed */
 }
 
-/* Floating hearts animation - hidden on small screens */
-#letterBox::before {
-    content: '❤️';
+/* Question Page */
+.buttons button {
+    width: auto;
+    padding: 12px 30px;
+    border-radius: 30px;
+    margin: 10px;
+}
+
+.yes {
+    background: #ff4d6d;
+}
+
+.no {
+    background:  #ff4d6d;
+    cursor: not-allowed;
+}
+
+/* Flower animation */
+.flower {
     position: absolute;
-    top: -10px;
-    left: 10%;
-    font-size: clamp(14px, 5vw, 20px);
-    animation: float 3s ease-in-out infinite;
+    top: -50px;
+    font-size: 24px;
+    animation: fall linear infinite;
 }
 
-#letterBox::after {
-    content: '💖';
-    position: absolute;
-    top: -10px;
-    right: 10%;
-    font-size: clamp(12px, 4vw, 18px);
-    animation: float 4s ease-in-out infinite reverse;
-}
-
-/* Keyframe animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
+@keyframes fall {
+    0% {
+        transform: translateY(-50px) rotate(0deg);
         opacity: 1;
-        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
     }
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
-@keyframes bounceIn {
-    0% { transform: scale(0.5); opacity: 0; }
-    60% { transform: scale(1.2); opacity: 1; }
-    80% { transform: scale(0.9); }
-    100% { transform: scale(1); }
-}
-
-@keyframes typewriter {
-    from { width: 0; }
-    to { width: 100%; }
-}
-
-@keyframes fadeInText {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-#letterBox.show {
-    animation: bounceIn 1s ease forwards;
-}
 
-.typewriter {
-    overflow: hidden;
-    border-right: 2px solid #c2185b;
-    white-space: nowrap;
-    animation: typewriter 4s steps(100, end), blink-caret 0.75s step-end infinite; /* Adjusted steps for longer text */
-}
-
-.fadeInText {
-    animation: fadeInText 2s ease forwards;
-}
-
-@keyframes blink-caret {
-    from, to { border-color: transparent; }
-    50% { border-color: #c2185b; }
-}
-
-/* Enhanced responsive design */
-@media (max-width: 768px) {
-    .container {
-        width: 90vw;
-        padding: 15px;
-    }
-    h1 {
-        font-size: 24px;
-    }
-    #letterBox::before, #letterBox::after {
-        display: none; /* Hide hearts on tablets for cleaner look */
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 5px;
-    }
-    .container {
-        width: 100vw;
-        padding: 10px;
-        border-radius: 10px;
-    }
-    h1 {
-        font-size: 20px;
-        margin-bottom: 15px;
-    }
-    label {
-        margin-top: 10px;
-        font-size: 14px;
-    }
-    input, button {
-        padding: 10px;
-        font-size: 16px; /* Prevent zoom on iOS */
-    }
-    #letterBox {
-        padding: 10px;
-        font-size: 14px;
-        margin-top: 15px;
-        max-height: 50vh;
-    }
-    #letterBox::before, #letterBox::after {
-        display: none; /* Hide hearts on phones */
-    }
-    .typewriter {
-        animation: none; /* Disable typewriter on phones for better performance */
-    }
-    .fadeInText {
-        animation: fadeInText 1.5s ease forwards; /* Use fade-in instead */
-    }
-}
