@@ -1,4 +1,4 @@
-function generateLetter() {
+function generateLetter() {function generateLetter() {
     let firstName = document.getElementById("firstName").value;
     let lastName = document.getElementById("lastName").value;
 
@@ -30,12 +30,40 @@ ${firstName} ${lastName}ရဲ့ အဖြေက ကိုယ်ကြားခ
 ${firstName} ${lastName}<br>
 `;
 
+
     let box = document.getElementById("letterBox");
     box.innerHTML = letter;
     box.style.display = "block";
 
-    // Add simple bounce animation
-    box.classList.remove("show"); // reset
-    void box.offsetWidth; // trigger reflow
-    box.classList.add("show");
+    document.getElementById("nextBtn").style.display = "block";
 }
+
+function goToQuestion() {
+    switchPage("page0", "page1");
+}
+
+function goNext() {
+    switchPage("page1", "page2");
+    startFlowers();
+}
+
+function switchPage(from, to) {
+    document.getElementById(from).classList.remove("active");
+    document.getElementById(to).classList.add("active");
+}
+
+/* Flower animation */
+function startFlowers() {
+    for (let i = 0; i < 30; i++) {
+        let flower = document.createElement("div");
+        flower.className = "flower";
+        flower.innerHTML = "🌸";
+        flower.style.left = Math.random() * 100 + "vw";
+        flower.style.animationDuration = (Math.random() * 3 + 3) + "s";
+        document.body.appendChild(flower);
+
+        setTimeout(() => flower.remove(), 6000);
+    }
+}
+
+
